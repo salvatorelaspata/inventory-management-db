@@ -1,0 +1,7 @@
+# create a nodejs gitignore file
+node_modules/
+npm-debug.log
+.DS_Store
+.env
+package-lock.json
+db
