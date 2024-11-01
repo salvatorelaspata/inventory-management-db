@@ -1,4 +1,6 @@
-module.exports = async function (fastify, opts) {
+// import { UserRepository } from "../repositories/UserRepository";
+
+export default async function (fastify, opts) {
   fastify.get("/", async (request, reply) => {
     return { hello: "asd" };
   });
@@ -12,4 +14,16 @@ module.exports = async function (fastify, opts) {
       client.release();
     }
   });
-};
+
+  fastify.get("/users", async (request, reply) => {
+    const { rows } = await fastify.pg.query("SELECT * FROM users");
+    return { users: rows };
+  });
+
+  // fastify.get("/users", async (request, reply) => {
+  //   const userRepo = new UserRepository(fastify.db);
+  //   const user = await userRepo.findAll();
+  //   user.name; // completamente tipizzato
+  //   return { users };
+  // });
+}

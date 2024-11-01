@@ -2,10 +2,16 @@
   "name": "inventory-management-db",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "jest",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "drizzle:generate": "drizzle-kit generate",
+    "drizzle:apply": "drizzle-kit push",
+    "drizzle:migrate": "node src/db/migrate.js",
+    "drizzle:seed": "node src/db/seed.js",
+    "drizzle:studio": "drizzle-kit studio"
   },
   "keywords": [],
   "author": "",
@@ -13,10 +19,14 @@
   "description": "",
   "dependencies": {
     "@fastify/postgres": "^6.0.1",
+    "@neondatabase/serverless": "^0.10.1",
+    "drizzle-orm": "^0.36.0",
     "fastify": "^5.0.0",
+    "mysql2": "^3.11.3",
     "pg": "^8.13.1"
   },
   "devDependencies": {
+    "drizzle-kit": "^0.27.1",
     "nodemon": "^3.1.7"
   }
 }

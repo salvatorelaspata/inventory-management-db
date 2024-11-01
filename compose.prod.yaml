@@ -22,22 +22,19 @@ services:
       context: .
       dockerfile: Dockerfile.migration
     environment:
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgresql://${DB_USER:-user}:${DB_PASSWORD:-password}@db:5432/${DB_NAME:-app}
     depends_on:
       db:
         condition: service_healthy
   server:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
     ports:
       - 3000:3000
-    volumes:
-      - .:/app
-      - /app/node_modules
     depends_on:
       migration:
         condition: service_completed_successfully

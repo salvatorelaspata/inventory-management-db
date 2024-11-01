@@ -1,0 +1,24 @@
+# Dockerfile.migration
+ARG NODE_VERSION=20.15.1
+
+FROM node:${NODE_VERSION}-alpine
+
+WORKDIR /app
+
+# Copia solo i file necessari per le dipendenze
+COPY package*.json ./
+COPY .env* ./
+
+# Installa le dipendenze
+RUN npm ci
+
+# Copia i file necessari per le migrazioni
+COPY drizzle.config.js ./
+COPY src/db ./src/db
+COPY drizzle ./drizzle
+
+# Script per eseguire migrazioni e seed
+COPY scripts/init.sh ./
+RUN chmod +x init.sh
+
+CMD ["./init.sh"]
