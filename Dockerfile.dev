@@ -1,0 +1,16 @@
+# Dockerfile.dev
+ARG NODE_VERSION=20.15.1
+
+FROM node:${NODE_VERSION}-alpine
+
+ENV NODE_ENV development
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run", "dev"]

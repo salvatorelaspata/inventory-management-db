@@ -10,26 +10,16 @@
 services:
   server:
     build:
-      context: ./src
-    develop:
-      watch:
-        - action: sync
-          path: ./src
-          target: /usr/src/app
-        - action: rebuild
-          path: ./package.json
-    # volumes:
-    #   - .:/usr/src/app
-    #   - ./node_modules:/usr/src/app/node_modules
+      context: .
+      dockerfile: Dockerfile.dev
     environment:
-      NODE_ENV: production
-      POSTGRES_HOST: db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
-      POSTGRES_DB: example
+      NODE_ENV: development
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - 3000:3000
-
+    volumes:
+      - .:/app
+      - /app/node_modules
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
 # start the database before your application. The `db-data` volume persists the
@@ -39,8 +29,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    secrets:
-      - db-password
   db:
     image: postgres
     restart: always
@@ -50,7 +38,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=example
+      - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
     expose:
       - 5432
